@@ -12,7 +12,7 @@ Riko Pals
 
 # ----- LIBRARIES
 
-from machine import Pin, SoftI2C, SPI
+from machine import Pin, SoftI2C
 from utime import ticks_ms, ticks_diff
 
 from vl53l0x import VL53L0X
