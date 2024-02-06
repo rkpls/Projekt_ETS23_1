@@ -23,12 +23,6 @@ import sh1106
 pin_SDA = 41
 pin_SCL = 42
 
-st7789_res = 5
-st7789_dc  = 4
-st7789_sck = 6
-st7789_mosi  = 7
-
-
 # ----- VARS
 passed = 0
 distance = 0
