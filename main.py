@@ -6,18 +6,13 @@ Display the distance to an object above the VL5310. Up to 50cm
 
 06.10.23
 Riko Pals
-
 """
-
-
 # ----- LIBRARIES
-
 from machine import Pin, SoftI2C
 from utime import ticks_ms, ticks_diff
 
 from vl53l0x import VL53L0X
 import sh1106
-
 
 # ----- PINOUT
 pin_SDA = 41
@@ -73,7 +68,6 @@ tof.set_Vcsel_pulse_period(tof.vcsel_period_type[1], 8)
 oled = sh1106.SH1106_I2C(128, 64, i2c, Pin(0), 0x3c)            # breite, höhe, bus, Platzhalter Pin, Hex adresse
 oled.sleep(False)
 oled.flip()
-oled.fill(0)
 
 # ----- Schleife
 while True:
