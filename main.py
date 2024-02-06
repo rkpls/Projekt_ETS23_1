@@ -38,18 +38,22 @@ def average(values):
         return 0
 
 # ---- Sensor Auslesen
-def sensor():
+def sensor_read():
     global distance
     dist = []                               # zum mitteln werden die Werte in eine Liste eingetragen
     dist.append(float(tof.read()))
     if len(dist) >= 5:
         dist.pop(0)
     distance = round(average(dist)*0.1,1)   # average ist die funktion oben, wert wird wegen Ungenauigkeiten gerundet und in cm umgerechnet
+        
+def data_manage():
+    global distance
     if distance > 50:                       # hat der Sensor ein Timeout (>500mm) wird anstatt der standardausgabe von 8900 'kein Objekt' ausgegeben, 
         distance = 'kein Objekt'            # distance wird in beiden Fällen zur anzeige in einen string umgewandelt
     else:
         distance = "%0.0f cm" % distance
-        
+        print(distance)
+
 # ---- Display Aktualisierung
 def display():
     oled.fill(0)
@@ -76,9 +80,8 @@ while True:
     time = ticks_ms()
     if (ticks_diff(time, passed) > 500):        # Programmdurchlauf nur 2x pro sekunde zur systementlastung
         for i in range (5):                     # Mehrfachabfrage zum mitteln der Werte
-            sensor()
-        if distance != 'kein Objekt':
-            print(distance)
+            sensor_read()
+        data_manage()
         display()
         passed = time
 
