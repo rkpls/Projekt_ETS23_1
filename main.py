@@ -77,7 +77,8 @@ while True:
     if (ticks_diff(time, passed) > 500):        # Programmdurchlauf nur 2x pro sekunde zur systementlastung
         for i in range (5):                     # Mehrfachabfrage zum mitteln der Werte
             sensor()
-        print(distance)
+        if distance != 'kein Objekt':
+            print(distance)
         display()
         passed = time
 
