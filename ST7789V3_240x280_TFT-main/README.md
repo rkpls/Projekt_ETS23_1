@@ -1,2 +1,0 @@
-# MicroPython_ST7789V3_240x280_TFT
- 
