@@ -1,8 +1,8 @@
 """
 ESP32-S3-DevKitC V4/MicroPython
-240x280 ST7789 SPI LCD
-VL53LO
-Display distance to object above VL53 up to 50cm
+sh1106 oled
+VL53LOX
+Display the distance to an object above the VL5310. Up to 50cm
 
 06.10.23
 Riko Pals
@@ -50,15 +50,15 @@ def sensor():
     if len(dist) >= 5:
         dist.pop(0)
     distance = round(average(dist)*0.1,1)
-    if distance > 500:
+    if distance > 50:
         distance = 'no object in range'
     else:
         distance = "%0.0f cm" % distance
 
 def display():
     oled.fill(0)
-    display.text("Entfernung:",0, 16, 1)
-    display.text(distance, 0, 32, 1)
+    oled.text("Entfernung:", 0, 16, 1)
+    oled.text(distance, 0, 32, 1)
     oled.show()
 
 print(i2c)
@@ -67,11 +67,12 @@ tof = VL53L0X(i2c)
 tof.set_measurement_timing_budget(10000)
 tof.set_Vcsel_pulse_period(tof.vcsel_period_type[0], 12)
 tof.set_Vcsel_pulse_period(tof.vcsel_period_type[1], 8)
-'''
+
 oled = sh1106.SH1106_I2C(128, 64, i2c, Pin(0), 0x3c)
 oled.sleep(False)
+oled.flip()
 oled.fill(0)
-'''
+
 while True:
     time = ticks_ms()
     if (ticks_diff(time, passed) > 500):
@@ -81,7 +82,7 @@ while True:
             print("%0.0f cm" % distance)
         except:
             print(distance)
-        #display()
+        display()
         passed = time
 
     
