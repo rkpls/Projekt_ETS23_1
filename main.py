@@ -83,10 +83,7 @@ while True:
     if (ticks_diff(time, passed) > 500):        # Programmdurchlauf nur 2x pro sekunde zur systementlastung
         for i in range (5):                     # Mehrfachabfrage zum mitteln der Werte
             sensor()
-        try:
-            print("%0.0f cm" % distance)
-        except:
-            print(distance)
+        print(distance)
         display()
         passed = time
 
