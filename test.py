@@ -12,7 +12,6 @@ from machine import Pin, SoftI2C
 from utime import ticks_ms, ticks_diff
 
 from vl53l0x import VL53L0X
-import sh1106
 
 # ----- PINOUT
 pin_SDA = 41
@@ -40,24 +39,6 @@ def sensor_read():
     if len(dist) >= 5:
         dist.pop(0)
     distance = round(average(dist)*0.1,1)   # average ist die funktion oben, wert wird wegen Ungenauigkeiten gerundet und in cm umgerechnet
-        
-def data_manage():
-    global distance
-    if distance > 50:                       # hat der Sensor ein Timeout (>500mm) wird anstatt der standardausgabe von 8900 'kein Objekt' ausgegeben, 
-        distance = 'kein Objekt'            # distance wird in beiden Fällen zur anzeige in einen string umgewandelt
-    else:
-        distance = "%0.0f cm" % distance
-        print(distance)
-
-# ---- Display Aktualisierung
-def display():
-    try:
-        oled.fill(0)
-        oled.text("Entfernung:", 0, 16, 1)      # Anzeige in zwei Zeilen
-        oled.text(distance, 0, 32, 1)
-        oled.show()
-    except:
-        pass
 
 print(i2c)              #i2c setup-überprüfung
 
@@ -67,10 +48,6 @@ tof.set_measurement_timing_budget(10000)
 tof.set_Vcsel_pulse_period(tof.vcsel_period_type[0], 12)
 tof.set_Vcsel_pulse_period(tof.vcsel_period_type[1], 8)
 
-# ----- Oled Setup zur korrekten Anzeige
-oled = sh1106.SH1106_I2C(128, 64, i2c, Pin(0), 0x3c)            # breite, höhe, bus, Platzhalter Pin, Hex adresse
-oled.sleep(False)
-oled.flip()
 
 # ----- Schleife
 while True:
@@ -78,11 +55,6 @@ while True:
     if (ticks_diff(time, passed) > 500):        # Programmdurchlauf nur 2x pro sekunde zur systementlastung
         for i in range (5):                     # Mehrfachabfrage zum mitteln der Werte
             sensor_read()
-        data_manage()
-        display()
+        print(distance)
         passed = time
 
-    
-    
-    
-    
